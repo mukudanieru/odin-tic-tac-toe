@@ -5,8 +5,14 @@
     --secondary-color: #8d99ae;
     --tertiary-color: #505168;
 
+    --first-player: #adf1d2;
+    --second-player: #ffd166;
+
     --dark-color: #000;
     --light-color: #fff;
+
+    --logo-font: "IBM Plex Mono";
+    --primary-font: "Outfit";
 }
 
 /* Basic CSS Reset */
@@ -14,4 +20,69 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+ul {
+    list-style-type: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+body {
+    font-family: var(--primary-font);
+    background-color: var(--primary-color);
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.header-page {
+    margin: 0.8rem 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.scoreboard {
+    width: auto;
+    height: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5rem;
+}
+
+.player-score {
+    background-color: var(--secondary-color);
+    width: 250px;
+    padding: 2px 1rem;
+    border-radius: 0.4rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.player {
+    font-size: 2rem;
+    font-weight: 500;
+}
+
+.active-x {
+    border-bottom: 2px solid var(--first-player);
+}
+
+.active-o {
+    border-bottom: 2px solid var(--second-player);
+}
+
+.score-value {
+    align-self: flex-end;
+    font-size: 2rem;
+    font-weight: 300;
 }
