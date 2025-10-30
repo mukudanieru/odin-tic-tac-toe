@@ -1,17 +1,18 @@
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Outfit:wght@100..900&display=swap");
 
 :root {
-    --primary-color: #2b2d42;
-    --secondary-color: #8d99ae;
-    --tertiary-color: #505168;
+    --bg-primary: #f8f9fa;
+    --bg-secondary: #e9ecef;
 
-    --first-player: #adf1d2;
-    --second-player: #ffd166;
+    --border-light: #dee2e6;
+    --border-medium: #ced4da;
+    --border-dark: #adb5bd;
 
-    --dark-color: #000;
-    --light-color: #fff;
+    --color-muted: #6c757d;
+    --color-primary: #495057;
+    --color-dark: #343a40;
+    --color-darkest: #212529;
 
-    --logo-font: "IBM Plex Mono";
     --primary-font: "Outfit";
 }
 
@@ -32,57 +33,71 @@ a {
 
 body {
     font-family: var(--primary-font);
-    background-color: var(--primary-color);
+    background-color: var(--bg-secondary);
     min-height: 100vh;
 
     display: flex;
     flex-direction: column;
 }
 
-.header-page {
-    margin: 0.8rem 0;
+.page-main {
+    flex: 1;
 
     display: flex;
-    align-items: center;
+    flex-direction: column;
     justify-content: center;
-}
-
-.scoreboard {
-    width: auto;
-    height: auto;
-
-    display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 2.5rem;
 }
 
-.player-score {
-    background-color: var(--secondary-color);
-    width: 250px;
-    padding: 2px 1rem;
-    border-radius: 0.4rem;
-
+.main-content {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    flex-direction: column;
+    gap: 2rem;
 }
 
-.player {
+.game-message {
+    color: var(--color-dark);
     font-size: 2rem;
     font-weight: 500;
+    text-align: center;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.active-x {
-    border-bottom: 2px solid var(--first-player);
+.gameboard {
+    background-color: var(--border-dark);
+    padding: clamp(3px, 5vw, 7px);
+
+    display: grid;
+    grid-template-columns: repeat(3, clamp(80px, 10vw, 240px));
+    grid-template-rows: repeat(3, clamp(80px, 10vw, 240px));
+    gap: 0.3rem;
 }
 
-.active-o {
-    border-bottom: 2px solid var(--second-player);
+.cell {
+    all: unset;
+    cursor: pointer;
+    background-color: var(--bg-primary);
 }
 
-.score-value {
-    align-self: flex-end;
-    font-size: 2rem;
-    font-weight: 300;
+.cell:hover {
+    background-color: var(--border-light);
+}
+
+.page-footer {
+    padding: 0.5rem 1rem;
+
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.page-footer,
+.footer-link {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--color-darkest);
 }

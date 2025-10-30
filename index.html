@@ -9,22 +9,34 @@
         <script src="./script.js" defer></script>
     </head>
     <body>
-        <header class="header-page">
-            <div class="scoreboard">
-                <div class="player-score active-x">
-                    <div class="player">X</div>
-                    <span class="score-value">-</span>
-                </div>
+        <main class="page-main">
+            <div class="main-content">
+                <div class="game-message">Player {name}, it's your turn!</div>
 
-                <div class="player-score active-o">
-                    <div class="player">O</div>
-                    <span class="score-value">-</span>
+                <div class="gameboard">
+                    <button class="cell"></button>
+                    <button class="cell"></button>
+                    <button class="cell"></button>
+                    <button class="cell"></button>
+                    <button class="cell"></button>
+                    <button class="cell"></button>
+                    <button class="cell"></button>
+                    <button class="cell"></button>
+                    <button class="cell"></button>
                 </div>
             </div>
-        </header>
+        </main>
 
-        <main></main>
-
-        <footer></footer>
+        <footer class="page-footer">
+            Created by&nbsp;
+            <a
+                class="footer-link"
+                href="https://github.com/mukudanieru"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                mukudanieru
+            </a>
+        </footer>
     </body>
 </html>
