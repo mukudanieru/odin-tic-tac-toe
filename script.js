@@ -22,6 +22,29 @@ function Gameboard() {
     const GRID_LENGTH = 3;
     const board = Array(GRID_LENGTH * GRID_LENGTH).fill(null);
 
+    const winningCombos = [
+        [0, 1, 2], // row 1
+        [3, 4, 5], // row 2
+        [6, 7, 8], // row 3
+        [0, 3, 6], // col 1
+        [1, 4, 7], // col 2
+        [2, 5, 8], // col 3
+        [0, 4, 8], // diagonal 1
+        [2, 4, 6], // diagonal 2
+    ];
+
+    function isThereAWinner() {
+        for (const winningCombo of winningCombos) {
+            const [a, b, c] = winningCombo.map((i) => board[i]);
+
+            if (a !== null && b !== null && c !== null && a === b && b === c) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     function getBoard() {
         return board;
     }
@@ -48,6 +71,7 @@ function Gameboard() {
         isPlaceEmpty,
         placeMarker,
         printBoard,
+        isThereAWinner,
     };
 }
 
@@ -68,9 +92,13 @@ function GameController() {
     function playRound(position) {
         const currentPlayer = getCurrentPlayer();
 
-        if (board.isPlaceEmpty(position)) {
+        if (board.isPlaceEmpty(position) && !board.isThereAWinner()) {
             board.placeMarker(position, currentPlayer.getMarker());
             switchPlayer();
+        }
+
+        if (board.isThereAWinner()) {
+            console.log(`${currentPlayer.getMarker()} WON!`);
         }
 
         board.printBoard();
@@ -80,6 +108,20 @@ function GameController() {
 }
 
 const game = GameController();
+console.log("----------------");
+game.playRound(0);
+
+console.log("----------------");
+game.playRound(3);
+
+console.log("----------------");
+game.playRound(1);
+
+console.log("----------------");
+game.playRound(4);
+
+console.log("----------------");
+game.playRound(2);
 
 // Dom Controller
 function DOMController() {}
