@@ -141,8 +141,15 @@ body {
 
 .cell {
     all: unset;
-    cursor: pointer;
+    font-size: 4.5rem;
+    font-weight: 700;
+    color: var(--color-darkest);
     background-color: var(--bg-primary);
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .cell:hover {

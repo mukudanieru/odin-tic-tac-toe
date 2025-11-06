@@ -45,6 +45,10 @@ function Gameboard() {
         return false;
     }
 
+    function isDraw() {
+        return board.every((cell) => cell !== null) && !isThereAWinner();
+    }
+
     function getBoard() {
         return board;
     }
@@ -72,13 +76,13 @@ function Gameboard() {
         placeMarker,
         printBoard,
         isThereAWinner,
+        isDraw,
     };
 }
 
 // Game Controller
-function GameController() {
+function GameController(board) {
     const players = [Player("X"), Player("O")];
-    const board = Gameboard();
     let currentPlayerIndex = 0;
 
     function getCurrentPlayer() {
@@ -98,30 +102,96 @@ function GameController() {
         }
 
         if (board.isThereAWinner()) {
-            console.log(`${currentPlayer.getMarker()} WON!`);
+            switchPlayer();
+            currentPlayer.incrementScore();
         }
-
-        board.printBoard();
     }
 
-    return { playRound };
+    function resetBoard(newBoard) {
+        board = newBoard;
+    }
+
+    return { getCurrentPlayer, playRound, resetBoard };
 }
 
-const game = GameController();
-console.log("----------------");
-game.playRound(0);
-
-console.log("----------------");
-game.playRound(3);
-
-console.log("----------------");
-game.playRound(1);
-
-console.log("----------------");
-game.playRound(4);
-
-console.log("----------------");
-game.playRound(2);
-
 // Dom Controller
-function DOMController() {}
+function DOMController() {
+    let board = Gameboard();
+    let game = GameController(board);
+    const mainContent = document.querySelector("#main-content");
+
+    function renderWinner() {
+        if (board.isThereAWinner()) {
+            const gameWinner = game.getCurrentPlayer();
+            let playerDOMScore;
+
+            if (gameWinner.getMarker() === "X") {
+                playerDOMScore = document.querySelector("#player-x");
+            } else {
+                playerDOMScore = document.querySelector("#player-o");
+            }
+
+            playerDOMScore.innerHTML = gameWinner.getScore();
+        }
+    }
+
+    function renderMarker() {
+        mainContent.addEventListener("click", (event) => {
+            if (
+                !event.target.classList.contains("cell") ||
+                board.isThereAWinner() ||
+                board.isDraw()
+            ) {
+                console.log("BAWAL NGA NI");
+                return;
+            }
+
+            const selectedCell = parseInt(event.target.id, 10);
+            game.playRound(selectedCell);
+
+            const DOMGameboard = document.querySelector("#gameboard");
+            const DOMGameboardArray = [...DOMGameboard.children];
+            const scriptGameboard = board.getBoard();
+
+            // Rendering each of the element from script gameboard to dom gameboard
+            for (let i = 0; i < scriptGameboard.length; i++) {
+                DOMGameboardArray[i].innerHTML = scriptGameboard[i];
+            }
+
+            renderWinner();
+        });
+    }
+
+    function restartGame() {
+        mainContent.addEventListener("click", (event) => {
+            const resetBtn = event.target.closest("button");
+
+            if (resetBtn === null) return;
+            if (!resetBtn.classList.contains("reset-btn")) return;
+
+            // Reseting the board from scratch
+            board = Gameboard();
+            game = GameController(board);
+
+            const DOMGameboard = document.querySelector("#gameboard");
+            const DOMGameboardArray = [...DOMGameboard.children];
+            const scriptGameboard = board.getBoard();
+
+            // Resetting each of the element from script gameboard to dom gameboard
+            for (let i = 0; i < scriptGameboard.length; i++) {
+                DOMGameboardArray[i].innerHTML = scriptGameboard[i];
+            }
+
+            const playerX = document.querySelector("#player-x");
+            playerX.innerHTML = 0;
+
+            const playerY = document.querySelector("#player-o");
+            playerY.innerHTML = 0;
+        });
+    }
+
+    renderMarker();
+    restartGame();
+}
+
+const domController = DOMController();
