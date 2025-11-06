@@ -1,72 +1,85 @@
 // Player
-function Player(name, marker) {
+function Player(marker) {
     let score = 0;
 
-    return {
-        getName() {
-            return name;
-        },
-        getMarker() {
-            return marker;
-        },
-        getScore() {
-            return score;
-        },
-        incrementScore() {
-            score++;
-        },
-    };
-}
+    function getMarker() {
+        return marker;
+    }
 
-// Cell - basically each of the cell in a tic tac toe
-function Cell() {
-    let value = 0;
+    function getScore() {
+        return score;
+    }
 
-    return {
-        addValue(playersMarker) {
-            value = playersMarker;
-        },
-        getValue() {
-            return value;
-        },
-    };
+    function incrementScore() {
+        score++;
+    }
+
+    return { getMarker, getScore, incrementScore };
 }
 
 // Board
 function Gameboard() {
-    const ROW = 3,
-        COLUMN = 3;
+    const GRID_LENGTH = 3;
+    const board = Array(GRID_LENGTH * GRID_LENGTH).fill(null);
 
-    const board = [];
+    function getBoard() {
+        return board;
+    }
 
-    for (let i = 0; i < ROW; i++) {
-        board[i] = [];
+    function isPlaceEmpty(idx) {
+        return !board[idx];
+    }
 
-        for (let j = 0; j < COLUMN; j++) {
-            board[i].push(Cell());
+    function placeMarker(idx, marker) {
+        board[idx] = marker;
+    }
+
+    function printBoard() {
+        for (let row = 0; row < GRID_LENGTH; row++) {
+            const start = row * GRID_LENGTH;
+            const end = start + GRID_LENGTH;
+            const rowValues = board.slice(start, end);
+            console.log(rowValues);
         }
     }
 
     return {
-        getBoard() {
-            return board;
-        },
-        printBoard() {
-            for (let i = 0; i < 3; i++) {
-                let row = "";
-                for (let j = 0; j < 3; j++) {
-                    row += board[i][j].getValue();
-                }
-                console.log(row);
-            }
-        },
+        getBoard,
+        isPlaceEmpty,
+        placeMarker,
+        printBoard,
     };
 }
 
-const board = Gameboard().printBoard();
-
 // Game Controller
-function gameController() {}
+function GameController() {
+    const players = [Player("X"), Player("O")];
+    const board = Gameboard();
+    let currentPlayerIndex = 0;
+
+    function getCurrentPlayer() {
+        return players[currentPlayerIndex];
+    }
+
+    function switchPlayer() {
+        currentPlayerIndex = currentPlayerIndex === 0 ? 1 : 0;
+    }
+
+    function playRound(position) {
+        const currentPlayer = getCurrentPlayer();
+
+        if (board.isPlaceEmpty(position)) {
+            board.placeMarker(position, currentPlayer.getMarker());
+            switchPlayer();
+        }
+
+        board.printBoard();
+    }
+
+    return { playRound };
+}
+
+const game = GameController();
 
 // Dom Controller
 function DOMController() {}
