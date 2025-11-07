@@ -108,6 +108,7 @@ function GameController(board) {
     }
 
     function resetBoard(newBoard) {
+        currentPlayerIndex = 0;
         board = newBoard;
     }
 
@@ -119,10 +120,12 @@ function DOMController() {
     let board = Gameboard();
     let game = GameController(board);
     const mainContent = document.querySelector("#main-content");
+    const modal = document.querySelector("#modal");
 
     function renderWinner() {
+        const gameWinner = game.getCurrentPlayer();
+
         if (board.isThereAWinner()) {
-            const gameWinner = game.getCurrentPlayer();
             let playerDOMScore;
 
             if (gameWinner.getMarker() === "X") {
@@ -132,6 +135,18 @@ function DOMController() {
             }
 
             playerDOMScore.innerHTML = gameWinner.getScore();
+
+            document.querySelector(
+                "#modal-message"
+            ).innerHTML = `Player ${gameWinner.getMarker()} wins! 🎉`;
+            modal.show();
+        }
+
+        if (board.isDraw()) {
+            document.querySelector(
+                "#modal-message"
+            ).innerHTML = `It's a draw! 🤝`;
+            modal.show();
         }
     }
 
@@ -190,8 +205,40 @@ function DOMController() {
         });
     }
 
+    function newGame() {
+        modal.addEventListener("click", (event) => {
+            if (event.target.id === "modal-next-round") {
+                board = Gameboard();
+                game.resetBoard(board);
+            } else if (event.target.id === "modal-restart-game") {
+                board = Gameboard();
+                game = GameController(board);
+
+                const playerX = document.querySelector("#player-x");
+                playerX.innerHTML = 0;
+
+                const playerY = document.querySelector("#player-o");
+                playerY.innerHTML = 0;
+            } else {
+                return;
+            }
+
+            modal.close();
+
+            const DOMGameboard = document.querySelector("#gameboard");
+            const DOMGameboardArray = [...DOMGameboard.children];
+            const scriptGameboard = board.getBoard();
+
+            // Rendering each of the element from script gameboard to dom gameboard
+            for (let i = 0; i < scriptGameboard.length; i++) {
+                DOMGameboardArray[i].innerHTML = scriptGameboard[i];
+            }
+        });
+    }
+
     renderMarker();
     restartGame();
+    newGame();
 }
 
 const domController = DOMController();
